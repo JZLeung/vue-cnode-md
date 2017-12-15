@@ -25,7 +25,7 @@
 
         <mu-list ref="list">
             <template v-for="(item, index) in data" >
-                <mu-list-item :title="item.title" :key="index">
+                <mu-list-item :title="item.title" :key="index" @click.native="gotoTopic(item.id)">
                     <mu-avatar :src="item.author.avatar_url"  slot="leftAvatar"/>
                     <span slot="describe">
                         <template v-if="item.good || item.top">
@@ -48,7 +48,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { getTopicList } from '@/api/home'
+import { getTopicList } from '@/api/topic'
 
 export default {
     data() {
@@ -130,6 +130,12 @@ export default {
             this.data.splice(0, this.data.length)
             console.log(item)
             this.toggleDrawer()
+        },
+        gotoTopic(id) {
+            this.$router.push({
+                name: 'Topic',
+                params: {id}
+            })
         }
     },
     mounted() {
