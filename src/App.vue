@@ -1,11 +1,45 @@
 <template>
-  <router-view />
+    <div class="app">
+        <keep-alive>
+            <router-view v-if="$route.meta.keepAlive"/>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
+    </div>
 </template>
 
 <script>
+import Cookie from 'js-cookie'
+import { Login } from '@/api/user'
 
 export default {
-    name: 'app'
+    name: 'app',
+    methods: {
+        autoLogin() {
+            let actoken = Cookie.get('CNode-acToken')
+            let userInfo = Cookie.get('CNode-userInfo')
+            userInfo = userInfo ? JSON.parse(userInfo) : null
+            if (userInfo && actoken) {
+                this.$store.dispatch('setAcToken', actoken)
+                this.$store.dispatch('setUserInfo', userInfo)
+            } else if (actoken) {
+                Login({actoken}).then(res => {
+                    console.log(res)
+                    delete res.success
+                    this.setAcToken(actoken)
+                    Cookie.set('CNode-acToken', actoken, { expires: 31 })
+                    this.setUserInfo(res)
+                    Cookie.set('CNode-userInfo', JSON.stringify(res), { expires: 31 })
+                    // this.showPopup('登录成功', true)
+                }).catch(err => {
+                    console.error(err)
+                    // this.showPopup('验证失败')
+                })
+            }
+        }
+    },
+    mounted() {
+        this.autoLogin()
+    }
 }
 </script>
 

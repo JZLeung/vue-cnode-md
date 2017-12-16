@@ -16,15 +16,20 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(config => {
     if (store.getters.acToken) {
+        if (config.method === 'post') {
+            config.data.accesstoken = store.getters.acToken
+        } else {
+            config.url += (config.url.indexOf('?') > -1 ? `&` : '?') + `accesstoken=${store.getters.acToken}`
+        }
         // config.headers['X-Token'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
     }
     // config.headers['Content-Type'] = 'application/x-www-form-urlencoded; chatset=UTF-8'
-    // console.log(config)
+    console.log(config)
     // config.data = formdata.obj2form(config.data)
     return config
 }, error => {
     // Do something with request error
-    console.log(error) // for debug
+    console.error('request error:', error) // for debug
     Promise.reject(error)
 })
 
@@ -41,8 +46,8 @@ service.interceptors.response.use(
             return res
         }
     },
-    error => {
-        console.log('err' + error) // for debug
+    (error) => {
+        console.log('reponse error:' + error) // for debug
         return Promise.reject(error)
     }
 )

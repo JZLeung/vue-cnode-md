@@ -7,7 +7,11 @@
         </mu-appbar>
 
         <mu-drawer :open="showDrawer" :docked="false" @close="toggleDrawer">
-            <mu-appbar title="登录">
+            <mu-appbar title="登录" v-if="!isLogin">
+                <mu-flat-button label="登录" class="demo-flat-button" :to="{name: 'UserLogin'}"/>
+            </mu-appbar>
+            <mu-appbar :title="user.loginname" v-else>
+                <mu-avatar slot="left" :src="user.avatar_url"/>
             </mu-appbar>
             <mu-list>
                 <template v-for="(item, index) in menu">
@@ -51,6 +55,7 @@ import { mapGetters, mapActions } from 'vuex'
 import { getTopicList } from '@/api/topic'
 
 export default {
+    name: 'Home',
     data() {
         return {
             menu: [
@@ -90,7 +95,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['loading']),
+        ...mapGetters(['loading', 'user', 'isLogin']),
         tabs() {
             let tabs = {}
             this.menu.map((item) => {
@@ -130,6 +135,7 @@ export default {
             this.data.splice(0, this.data.length)
             console.log(item)
             this.toggleDrawer()
+            this.getData()
         },
         gotoTopic(id) {
             this.$router.push({

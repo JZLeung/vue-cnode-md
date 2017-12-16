@@ -9,14 +9,19 @@ export default new Vuex.Store({
     state: {
         accessToken: '',
         loading: false,
+        user: {},
         cache: {}
     },
     getters: {
+        user: state => state.user,
         loading: state => state.loading,
         isLogin: state => !!state.accessToken,
         acToken: state => state.accessToken
     },
     mutations: {
+        [TYPES.SET_USER_INFO](state, user) {
+            state.user = user
+        },
         [TYPES.SET_LOADING](state, payload) {
             state.loading = payload
         },
@@ -25,6 +30,9 @@ export default new Vuex.Store({
         }
     },
     actions: {
+        setUserInfo({commit}, user) {
+            commit(TYPES.SET_USER_INFO, user)
+        },
         setLoading({commit}, loading) {
             commit(TYPES.SET_LOADING, loading)
         },

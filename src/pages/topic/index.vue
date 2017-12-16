@@ -1,7 +1,7 @@
 <template>
 <div class="cnode-topic-page">
     <mu-appbar :title="detail.title || ''">
-        <mu-icon-button icon="keyboard_arrow_left" slot="left"/>
+        <mu-icon-button icon="keyboard_arrow_left" slot="left" @click="goBack"/>
         <mu-icon-button v-if="!detail.is_collect" icon="favorite_border" slot="right"/>
         <mu-icon-button v-if="detail.is_collect" icon="favorite" color="pink500" slot="right"/>
 
@@ -35,7 +35,7 @@
             <mu-card-header :title="reply.author.loginname" :subTitle="reply.create_at|dateFormat">
                 <mu-avatar :src="reply.author.avatar_url" slot="avatar"/>
             </mu-card-header>
-            <mu-card-text v-if="reply.reply_id" class="reply-text">
+            <mu-card-text v-if="reply.reply_id && replies[reply.reply_id]" class="reply-text">
                 <div v-html="replies[reply.reply_id].content"></div>
             </mu-card-text>
             <mu-card-text>
@@ -47,18 +47,20 @@
             </mu-card-actions>
         </mu-card>
     </div>
+    <mu-back-top/>
 </div>
 </template>
 
 <script>
 import { getTopicDetail } from '@/api/topic'
-import {mapActions, mapGetters} from 'vuex'
+import {mapGetters} from 'vuex'
 
 export default {
     data() {
         return {
             detail: {
-                author: {}
+                author: {},
+                content: ''
             },
             replies: {},
             id: ''
@@ -71,12 +73,17 @@ export default {
         getData() {
             getTopicDetail({id: this.id})
                 .then(res => {
+                    console.log(res)
                     this.detail = res.data
                     document.title = this.detail.title + this.$route.meta.title
                     this.detail.replies.map((reply) => {
                         this.replies[reply.id] = reply
                     })
                 })
+        },
+        goBack() {
+            history.back()
+            // this.$router.go(-1)
         }
     },
     mounted() {
