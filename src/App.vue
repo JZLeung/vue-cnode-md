@@ -44,6 +44,10 @@ export default {
 </script>
 
 <style>
+.content{
+    max-width: 1200px;
+    margin: 0 auto;
+}
 /* 此处设置为 100% 让 InfiniteScroll 能正常工作
  * https://github.com/museui/muse-ui/issues/380
  */

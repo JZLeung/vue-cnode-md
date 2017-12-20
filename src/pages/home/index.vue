@@ -1,5 +1,5 @@
 <template>
-    <div class="cnode-home-page">
+    <div class="cnode-home-page ">
         <mu-appbar :title="title">
             <mu-icon-button icon="menu" slot="left" @click.native="toggleDrawer"/>
             <!-- <mu-flat-button label="ddd" slot="right"/> -->
@@ -27,7 +27,7 @@
             </mu-list>
         </mu-drawer>
 
-        <mu-list ref="list">
+        <mu-list ref="list" class="content">
             <template v-for="(item, index) in data" >
                 <mu-list-item :title="item.title" :key="index" @click.native="gotoTopic(item.id)">
                     <mu-avatar :src="item.author.avatar_url"  slot="leftAvatar"/>

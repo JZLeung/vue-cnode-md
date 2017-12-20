@@ -8,3 +8,7 @@ export const Login = ({actoken}) => {
         }
     )
 }
+
+export const UserInfo = ({loginname}) => {
+    return axios.get(`/user/${loginname}`)
+}

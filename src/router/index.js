@@ -34,6 +34,14 @@ const routes = [
         meta: {
             title: '登录 - CNode技术社区'
         }
+    },
+    {
+        path: '/user/:loginname',
+        name: 'UserInfo',
+        component: require('@/pages/user').default,
+        meta: {
+            title: ' - CNode技术社区'
+        }
     }
 ]
 

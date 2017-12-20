@@ -13,9 +13,9 @@
 
 ##  Feature
 -   [x] Home
--   [ ] Topic
--   [ ] User Info
--   [ ] Login / Logout
+-   [x] Topic
+-   [x] User Info
+-   [x] Login / Logout
 -   [ ] Reply Topic
 -   [ ] Post Topic
 

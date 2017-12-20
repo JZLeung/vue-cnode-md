@@ -27,6 +27,13 @@ export default new Vuex.Store({
         },
         [TYPES.SET_ACCESS_TOKEN](state, payload) {
             state.accessToken = payload
+        },
+        [TYPES.LOGOUT](state) {
+            state.user = {
+                loginname: '',
+                avatar_url: ''
+            }
+            state.accessToken = ''
         }
     },
     actions: {
@@ -38,6 +45,9 @@ export default new Vuex.Store({
         },
         setAcToken({commit}, acToken) {
             commit(TYPES.SET_ACCESS_TOKEN, acToken)
+        },
+        logout({commit}) {
+            commit(TYPES.LOGOUT)
         }
     }
 })

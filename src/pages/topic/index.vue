@@ -1,5 +1,5 @@
 <template>
-<div class="cnode-topic-page">
+<div class="cnode-topic-page ">
     <mu-appbar :title="detail.title || ''">
         <mu-icon-button icon="keyboard_arrow_left" slot="left" @click="goBack"/>
         <mu-icon-button v-if="!detail.is_collect" icon="favorite_border" slot="right"/>
@@ -14,12 +14,14 @@
         </mu-icon-menu>
     </mu-appbar>
 
-    <div class="topic-detail">
+    <div class="topic-detail content">
         <!-- 主题正文 -->
         <mu-card>
-            <mu-card-header :title="detail.author.loginname" :subTitle="detail.create_at|dateFormat">
-                <mu-avatar :src="detail.author.avatar_url" slot="avatar"/>
-            </mu-card-header>
+            <router-link :to="{name: 'UserInfo', params: {loginname: detail.author.loginname}}">
+                <mu-card-header :title="detail.author.loginname" :subTitle="detail.create_at|dateFormat">
+                    <mu-avatar :src="detail.author.avatar_url" slot="avatar"/>
+                </mu-card-header>
+            </router-link>
             <!-- <mu-card-title :title="detail.title" subTitle=""/> -->
             <mu-card-text>
                 <div v-html="detail.content"></div>
@@ -32,9 +34,11 @@
 
         <!-- 主题回复 -->
         <mu-card v-for="reply in detail.replies" :key="reply.id" :id="reply.id">
-            <mu-card-header :title="reply.author.loginname" :subTitle="reply.create_at|dateFormat">
-                <mu-avatar :src="reply.author.avatar_url" slot="avatar"/>
-            </mu-card-header>
+            <router-link :to="{name: 'UserInfo', params: {loginname: reply.author.loginname}}">
+                <mu-card-header :title="reply.author.loginname" :subTitle="reply.create_at|dateFormat">
+                    <mu-avatar :src="reply.author.avatar_url" slot="avatar"/>
+                </mu-card-header>
+            </router-link>
             <mu-card-text v-if="reply.reply_id && replies[reply.reply_id]" class="reply-text">
                 <div v-html="replies[reply.reply_id].content"></div>
             </mu-card-text>
